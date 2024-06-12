@@ -7,22 +7,41 @@ const Loginpage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [redirect, setRedirect] = useState(false);
-    const {setUserInfo} = useContext(UserContext)
+    const { setUserInfo } = useContext(UserContext)
 
     const login = async (ev) => {
         ev.preventDefault();
-        const response = await fetch('https://blogapp-server-bfj0.onrender.com/login', {
+        // const response = await fetch('https://blogapp-server-bfj0.onrender.com/login', {
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         username,
+        //         password
+        //     }),
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     credentials: 'include',
+
+        // })
+
+        const response = fetch('https://blogapp-server-bfj0.onrender.com/login', {
             method: 'POST',
-            body: JSON.stringify({
-                username,
-                password
-            }),
+            credentials: 'include',  // Ensure credentials are included
             headers: {
                 'Content-Type': 'application/json'
             },
-            credentials: 'include',
-
+            body: JSON.stringify({
+                username,
+                password
+            })
         })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         if (response.ok) {
             response.json().then(userInfo => {
                 setUserInfo(userInfo);
