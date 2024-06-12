@@ -66,12 +66,11 @@
 // };
 
 // export default Loginpage;
-
 import React, { useContext, useState } from "react";
 import { Navigate } from 'react-router-dom';
-import { UserContext } from "../components/UserContext"; // Ensure correct path
+import { UserContext } from "../components/Usercontext";
 
-const LoginPage = () => {
+const Loginpage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [redirect, setRedirect] = useState(false);
@@ -81,15 +80,21 @@ const LoginPage = () => {
         ev.preventDefault();
         const response = await fetch('https://blogapp-server-bfj0.onrender.com/login', {
             method: 'POST',
-            body: JSON.stringify({ username, password }),
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // Ensure server is configured to accept credentials
+            body: JSON.stringify({
+                username,
+                password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
         });
 
         if (response.ok) {
             const userInfo = await response.json();
             setUserInfo(userInfo);
-            setRedirect(true); // Move this inside the response.ok block to avoid premature redirection
+            setRedirect(true);
+            alert("Login Successful");
         } else {
             alert("Login Failed");
         }
@@ -114,9 +119,10 @@ const LoginPage = () => {
                 value={password}
                 onChange={(ev) => setPassword(ev.target.value)}
             />
-            <button type="submit">Login</button> {/* Explicitly specify button type */}
+            <button type="submit">Login</button>
         </form>
     );
 };
 
-export default LoginPage;
+export default Loginpage;
+
